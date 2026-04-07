@@ -1,0 +1,104 @@
+plugins {
+    id 'maven-publish'
+}
+
+version = generateVersion()
+group = project.maven_group
+def targetJavaVersion = 17
+
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven {
+        name = 'ParchmentMC'
+        url = 'https://maven.parchmentmc.org'
+    }
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        it.options.release.set(targetJavaVersion)
+    }
+}
+
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    withSourcesJar()
+}
+
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
+
+
+/*
+ * VCS-Based Automatic Versioning
+ */
+
+
+def getLoader() {
+    if (project.hasProperty("fabric_version")) {
+        return "fabric"
+    } else if (project.hasProperty("forge_version") && !project.hasProperty("neoforge_version")) {
+        return "forge"
+    } else if (project.hasProperty("neoforge_version")){
+        return "neoforge"
+    }
+
+    return ""
+}
+
+// Okay this is awful. but it will do.
+def generateVersion() {
+    def tagData = git_getTagData()
+    def loader = getLoader()
+    // If the number of commits since a tag is zero we are at a "publishing" point.
+    if (tagData[1] == 0) {
+        // Use user-facing format
+        return "${tagData[0]}+${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
+    } else {
+        // Use VCS-backed formatting
+        // tagName+branch-commits-hash_loader+mc_version
+        def branchName = git_getBranchOrHead().split("/").last()
+        def shortSha = git_getShortSha()
+        def isDirty = git_isDirty()
+
+        return "${tagData[0]}+$branchName-${tagData[1]}-${shortSha}${isDirty ? "+WIP" : ""}__${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
+    }
+}
+
+static def execAndGetOutput(String command) {
+    return command.execute().getInputStream().getText().trim()
+}
+
+static def git_getBranchOrHead() {
+    // Command: git rev-parse --abbrev-ref HEAD
+    return execAndGetOutput("git rev-parse --abbrev-ref HEAD")
+}
+
+static def git_getShortSha() {
+    return execAndGetOutput("git rev-parse --short HEAD")
+}
+
+static def git_getTagData() {
+    // Command: git describe --tags
+    def output = execAndGetOutput("git describe --tags --long").split("-")
+    return new Tuple(output[0], output[1].toInteger())
+}
+
+static def git_isDirty() {
+    def output = execAndGetOutput("git status --porcelain")
+    return !output.isEmpty()
+}
