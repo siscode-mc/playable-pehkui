@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "playable-pekhui",
+  "version": "${version}",
+  "name": "playable-pekhui",
+  "description": "Practical Pehkui Playability Patches",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/playable-pekhui/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "org.siscode.playablePehkui.platform.fabric.PlayablePehkuiClient"
+    ],
+    "main": [
+      "org.siscode.playablePehkui.platform.fabric.PlayablePehkui"
+    ]
+  },
+  "mixins": [
+    "playable-pehkui.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
