@@ -16,6 +16,14 @@ repositories {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
     }
+    // Pehkui:
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+        content {
+            includeGroup "com.github.Virtuoel"
+        }
+    }
 }
 
 
