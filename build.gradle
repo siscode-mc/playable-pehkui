@@ -25,6 +25,11 @@ repositories {
             includeGroup "com.github.Virtuoel"
         }
     }
+    // Kaleido Config:
+    maven {
+        name = "Sleeping Town"
+        url 'https://repo.sleeping.town/'
+    }
 }
 
 
@@ -69,6 +74,9 @@ dependencies {
     modApi("com.github.Virtuoel:Pehkui:${pehkui_version}", {
         exclude group: "net.fabricmc.fabric-api"
     })
+
+    implementation "folk.sisby:kaleido-config:${kaleido_config_version}"
+    include "folk.sisby:kaleido-config:${kaleido_config_version}"
 }
 
 processResources {
