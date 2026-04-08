@@ -1,5 +1,14 @@
 pluginManagement {
     repositories {
+        maven {
+            name = "NeoForge"
+            url = "https://maven.neoforged.net/releases/"
+        }
+        // For MixinExtras:
+        maven {
+            name = "Fabric"
+            url = "https://maven.fabricmc.net/"
+        }
         gradlePluginPortal()
     }
 }

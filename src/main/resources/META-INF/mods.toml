@@ -1,0 +1,42 @@
+# ModLoader
+modLoader="javafml"
+loaderVersion="${forge_version_range}"
+license="MIT"
+
+# The mod
+[[mods]]
+modId="playable_pehkui"
+version="${version}"
+displayName="Playable Pehkui"
+
+# A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+# A URL for the "homepage" for this mod, displayed in the mod UI
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+
+issueTrackerURL="https://github.com/siscode-mc/plyable-pehkui/issues"
+
+# A file name (in the root of the mod JAR) containing a logo for display
+logoFile="logo.png"
+
+# A text field displayed in the mod UI
+authors="siscodeorg"
+
+# The description text for the mod
+description="Practical Pehkui Playability Patches"
+
+# Dependency - Forge
+[[dependencies.playable_pehkui]]
+modId="forge"
+mandatory=true
+versionRange="${forge_version_range}"
+ordering="NONE"
+side="BOTH"
+
+# Dependency - Minecraft
+[[dependencies.playable_pehkui]]
+modId="minecraft"
+mandatory=true
+versionRange="${minecraft_version}"
+ordering="NONE"
+side="BOTH"

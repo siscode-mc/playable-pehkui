@@ -1,4 +1,5 @@
 plugins {
+    id 'net.neoforged.moddev.legacyforge' version "$moddevgradle_version"
     id 'maven-publish'
 }
 
@@ -50,6 +51,65 @@ jar {
     }
 }
 
+/*
+ * (Neo)Forge Setup
+ */
+
+legacyForge {
+    version = "$minecraft_version-$forge_version"
+    validateAccessTransformers = true
+
+    runs {
+        client {
+            client()
+        }
+
+        server {
+            server()
+        }
+    }
+
+    mods {
+        "playable_pehkui" {
+            sourceSet sourceSets.main
+        }
+    }
+
+    parchment {
+        minecraftVersion = minecraft_version
+        mappingsVersion = parchment_version
+    }
+}
+
+// NOTE: Enable this when we actually have mixins.
+// I'm running to a problem where since no refmaps are generated the build crashes.
+// Unlike fabric, forge doesn't gracefully handles empty mixin configs.
+
+//mixin {
+//    // Refmaps are per sourceset so just this one would apply to any configs we may have.
+//    // Including those inside `platform`.
+//    add sourceSets.main, 'playable-pehkui.mixins.refmap.json'
+//    config 'playable-pehkui.mixins.json'
+//}
+
+dependencies {
+    modImplementation("com.github.Virtuoel:Pehkui:${pehkui_version}-${minecraft_version}-forge")
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "forge_version_range", project.forge_version_range
+    filteringCharset "UTF-8"
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version,
+                "minecraft_version": project.minecraft_version,
+                "forge_version_range": project.forge_version_range
+    }
+}
 
 /*
  * VCS-Based Automatic Versioning
