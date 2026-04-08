@@ -63,11 +63,12 @@ def getLoader() {
 // Okay this is awful. but it will do.
 def generateVersion() {
     def tagData = git_getTagData()
+    def leadingZero = tagData[0].toString().matches("^\\d+.*") ? "" :  "0."
     def loader = getLoader()
     // If the number of commits since a tag is zero we are at a "publishing" point.
     if (tagData[1] == 0) {
         // Use user-facing format
-        return "${tagData[0]}+${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
+        return "${leadingZero}${tagData[0]}+${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
     } else {
         // Use VCS-backed formatting
         // tagName+branch-commits-hash_loader+mc_version
@@ -75,7 +76,7 @@ def generateVersion() {
         def shortSha = git_getShortSha()
         def isDirty = git_isDirty()
 
-        return "${tagData[0]}+$branchName-${tagData[1]}-${shortSha}${isDirty ? "+WIP" : ""}__${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
+        return "${leadingZero}${tagData[0]}+$branchName-${tagData[1]}-${shortSha}${isDirty ? "+WIP" : ""}__${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
     }
 }
 
