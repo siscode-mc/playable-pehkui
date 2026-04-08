@@ -44,10 +44,19 @@ java {
     withSourcesJar()
 }
 
+// I know this is a typo. It'll be like that unless someone fix it later.
+// There are such typos sprinkled everywhere. This mod's name is awful for me specifically it seems.
+def mixinConfigs = ["playable-pehkui.mixins.json"]
 
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name}" }
+    }
+
+    manifest {
+        attributes([
+            'MixinConfigs' : mixinConfigs.join(", "),
+        ])
     }
 }
 
@@ -81,16 +90,14 @@ legacyForge {
     }
 }
 
-// NOTE: Enable this when we actually have mixins.
-// I'm running to a problem where since no refmaps are generated the build crashes.
-// Unlike fabric, forge doesn't gracefully handles empty mixin configs.
-
-//mixin {
-//    // Refmaps are per sourceset so just this one would apply to any configs we may have.
-//    // Including those inside `platform`.
-//    add sourceSets.main, 'playable-pehkui.mixins.refmap.json'
-//    config 'playable-pehkui.mixins.json'
-//}
+mixin {
+    // Refmaps are per sourceset so just this one would apply to any configs we may have.
+    // Including those inside `platform`.
+    add sourceSets.main, 'playable-pehkui.mixins.refmap.json'
+    for (cfg in mixinConfigs) {
+        config cfg
+    }
+}
 
 dependencies {
     modImplementation("com.github.Virtuoel:Pehkui:${pehkui_version}-${minecraft_version}-forge")
