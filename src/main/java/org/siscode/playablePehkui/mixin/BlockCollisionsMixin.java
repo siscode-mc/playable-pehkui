@@ -12,6 +12,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.siscode.playablePehkui.platform.facade.PlayablePehkui;
 import org.siscode.playablePehkui.util.PehkuiUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,6 +22,10 @@ import virtuoel.pehkui.api.ScaleTypes;
 public class BlockCollisionsMixin<T>  {
     @WrapOperation(method = "computeNext", at = @At(value = "INVOKE", target="Lnet/minecraft/world/level/block/state/BlockState;getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;"))
     public VoxelShape pphk$leavesHaveNoColissionIfYoureBig(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext, Operation<VoxelShape> original) {
+        if (!PlayablePehkui.SERVER_CONFIG.passThroughLeaves) {
+            return original.call(blockState, blockGetter, blockPos, collisionContext);
+        }
+        
         if (!(collisionContext instanceof EntityCollisionContext)) { return original.call(blockState, blockGetter, blockPos, collisionContext); }
         Entity entity = ((EntityCollisionContext) collisionContext).getEntity();
         if (entity == null) { return original.call(blockState, blockGetter, blockPos, collisionContext); }

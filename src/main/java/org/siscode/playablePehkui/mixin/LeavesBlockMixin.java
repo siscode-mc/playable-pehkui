@@ -10,6 +10,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.siscode.playablePehkui.mixininterface.Slowable;
+import org.siscode.playablePehkui.platform.facade.PlayablePehkui;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(LeavesBlock.class)
@@ -23,6 +24,6 @@ public class LeavesBlockMixin extends Block {
         double BASE_POWER = 1.0;
         AABB intersection = entity.getBoundingBox().intersect(AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(pos)));
         double volume = intersection.getXsize() * intersection.getYsize() * intersection.getZsize();
-        ((Slowable)entity).ppkh$addSlowdownContribution((float) (BASE_POWER * volume));
+        ((Slowable)entity).ppkh$addSlowdownContribution((float) (PlayablePehkui.SERVER_CONFIG.leavesSlowdown * volume));
     }
 }
