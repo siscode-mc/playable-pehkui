@@ -3,6 +3,7 @@ package org.siscode.playablePehkui;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import org.siscode.playablePehkui.platform.facade.ModIdentifierUtil;
+import org.siscode.playablePehkui.platform.facade.PlayablePehkui;
 import virtuoel.pehkui.api.*;
 
 import java.util.stream.Collectors;
@@ -29,10 +30,7 @@ public class PehkuiPlugin {
     }
 
     public static void replacePehkuiDefaultScalings() {
-        boolean USE_MOTION_RESCALE = true;  // TODO: these should be configuration points
-        boolean USE_REACH_RESCALE = true;
-        boolean USE_THIRD_PERSON_RESCALE = true;
-        if (USE_MOTION_RESCALE) {
+        if (PlayablePehkui.SERVER_CONFIG.useMotionRescale) {
             if (ScaleTypes.MOTION.getDefaultBaseValueModifiers().remove(ScaleModifiers.BASE_MULTIPLIER)) {
                 ScaleTypes.MOTION.getDefaultBaseValueModifiers().add(SCALE_MODIFIER_SQRT_BASE);
             } else {
@@ -42,7 +40,7 @@ public class PehkuiPlugin {
                 LogUtils.getLogger().warn("[PlayablePehkui] Unable to remove pehkui default scaling for pehkui:motion, did someone else already remove it? Potential culprits: {}. Report this as a compatibility bug to playablepehkui devs", plausibleCulprits);
             }
         }
-        if (USE_REACH_RESCALE) {
+        if (PlayablePehkui.SERVER_CONFIG.useReachRescale) {
             if (ScaleTypes.REACH.getDefaultBaseValueModifiers().remove(ScaleModifiers.BASE_MULTIPLIER)) {
                 ScaleTypes.REACH.getDefaultBaseValueModifiers().add(SCALE_MODIFIER_SQRT_BASE);
             } else {
@@ -52,7 +50,7 @@ public class PehkuiPlugin {
                 LogUtils.getLogger().warn("[PlayablePehkui] Unable to remove pehkui default scaling for pehkui:reach, did someone else already remove it? Potential culprits: {}. Report this as a compatibility bug to playablepehkui devs", plausibleCulprits);
             }
         };
-        if (USE_THIRD_PERSON_RESCALE) {
+        if (PlayablePehkui.SERVER_CONFIG.useThirdPersonRescale) {
             if (ScaleTypes.THIRD_PERSON.getDefaultBaseValueModifiers().remove(ScaleModifiers.HEIGHT_MULTIPLIER)) {
                 ScaleTypes.THIRD_PERSON.getDefaultBaseValueModifiers().add(SCALE_MODIFIER_SQRT_HEIGHT);
             } else {
