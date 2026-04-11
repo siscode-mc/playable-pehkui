@@ -8,6 +8,8 @@ import virtuoel.pehkui.api.*;
 
 import java.util.stream.Collectors;
 
+import static org.siscode.playablePehkui.platform.facade.ModIdentifierUtil.pphkResource;
+
 public class PehkuiPlugin {
     public static ScaleModifier SCALE_MODIFIER_SQRT_BASE = new TypedScaleModifier(() -> ScaleTypes.BASE,
             (toModify, base) -> toModify * Math.sqrt(base)
@@ -15,15 +17,16 @@ public class PehkuiPlugin {
     public static ScaleModifier SCALE_MODIFIER_SQRT_HEIGHT = new TypedScaleModifier(() -> ScaleTypes.HEIGHT,
             (toModify, base) -> toModify * Math.sqrt(base)
     );
+    public static final ScaleType WORLD_INTERACTION_SCALE = ScaleType.Builder.create().addBaseValueModifier(ScaleModifiers.BASE_MULTIPLIER).build();
 
 
     public static void registerScaleModifiers() {
         ScaleRegistries.SCALE_MODIFIERS.put(
-                ModIdentifierUtil.pphkResource("sqrt_base_multiplier"),
+                pphkResource("sqrt_base_multiplier"),
                 SCALE_MODIFIER_SQRT_BASE
         );
         ScaleRegistries.SCALE_MODIFIERS.put(
-                ModIdentifierUtil.pphkResource("sqrt_base_multiplier"),
+                pphkResource("sqrt_base_multiplier"),
                 SCALE_MODIFIER_SQRT_HEIGHT
         );
 
@@ -62,8 +65,13 @@ public class PehkuiPlugin {
         }
     }
 
+    public static void registerNewScales() {
+        ScaleRegistries.SCALE_TYPES.put(pphkResource("world_interaction"), WORLD_INTERACTION_SCALE);
+    }
+
     public static void initialize() {
         registerScaleModifiers();
+        registerNewScales();
         replacePehkuiDefaultScalings();
     }
 }
