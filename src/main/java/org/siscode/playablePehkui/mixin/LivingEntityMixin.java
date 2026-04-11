@@ -1,5 +1,6 @@
 package org.siscode.playablePehkui.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -68,7 +69,7 @@ public abstract class LivingEntityMixin extends Entity {
         return false;
     }
 
-    @ModifyConstant(method="handleRelativeFrictionAndCalculateMovement", constant=@Constant(doubleValue = 0.2D))
+    @ModifyExpressionValue(method="handleRelativeFrictionAndCalculateMovement",at= @At(value="CONSTANT", args="doubleValue=0.2D"))
     public double variableClimbingSpeed(double original) {
         LivingEntity self = ((LivingEntity)(Object)this);
         var climbing = self.getLastClimbablePos();
