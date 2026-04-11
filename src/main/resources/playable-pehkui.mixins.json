@@ -4,6 +4,9 @@
   "package": "org.siscode.playablePehkui.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlockCollisionsMixin",
+    "EntityMixin",
+    "LeavesBlockMixin"
   ],
   "client": [
   ],
