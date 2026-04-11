@@ -4,10 +4,10 @@
 A collection of patches and additional features for pehkui designed to make the game playable at larger and smaller scales.
 
 ### Features:
+- change certain default pehkui scaling dependencies to be more realistic and playable (less linear)
 - large players can slowly pass through certain obstructions such as leaves
 
 ### Planned features:
-- change certain default pehkui scaling dependencies to be more realistic and playable (less linear)
 - small players can climb certain blocks with climbable-appearing textures, especially groundcover blocks for navigation
 - large players can break and place multiple blocks at once on a custom large-scale grid
 
