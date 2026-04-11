@@ -25,6 +25,11 @@ repositories {
             includeGroup "com.github.Virtuoel"
         }
     }
+    // Kaleido Config:
+    maven {
+        name = "Sleeping Town"
+        url 'https://repo.sleeping.town/'
+    }
 }
 
 
@@ -109,6 +114,8 @@ dependencies {
             prefer '0.5.3'
         }
     }
+
+    jarJar(implementation("folk.sisby:kaleido-config:${kaleido_config_version}"))
 
     annotationProcessor 'io.github.llamalad7:mixinextras-common:0.5.3'
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
