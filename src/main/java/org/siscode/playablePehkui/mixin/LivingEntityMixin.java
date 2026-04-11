@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.siscode.playablePehkui.config.ServerConfig;
 import org.siscode.playablePehkui.movement.ScaleSensitiveClimbables;
@@ -15,10 +16,13 @@ import org.siscode.playablePehkui.platform.fabric.PlayablePehkui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.Optional;
 
+import static net.minecraft.world.entity.LivingEntity.DEFAULT_BASE_GRAVITY;
 import static org.siscode.playablePehkui.platform.facade.PlayablePehkui.SERVER_CONFIG;
 
 @Mixin(LivingEntity.class)
@@ -62,5 +66,19 @@ public abstract class LivingEntityMixin extends Entity {
             }
         }
         return false;
+    }
+
+    @ModifyConstant(method="handleRelativeFrictionAndCalculateMovement", constant=@Constant(doubleValue = 0.2D))
+    public double variableClimbingSpeed(double original) {
+        LivingEntity self = ((LivingEntity)(Object)this);
+        var climbing = self.getLastClimbablePos();
+        if (climbing.isEmpty()) { return original; }
+
+        BlockState climbingBlock = self.level().getBlockState(climbing.get());
+        if (!ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.containsKey(climbingBlock.getBlock())) { return original; }
+        var climbability = ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.get(climbingBlock.getBlock()).apply(climbingBlock);
+
+        var actualSpeed = original - DEFAULT_BASE_GRAVITY;  // TODO: Handle entities with other gravities
+        return (actualSpeed * climbability.speedModifier()) + DEFAULT_BASE_GRAVITY;
     }
 }
