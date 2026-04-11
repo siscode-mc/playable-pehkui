@@ -9,6 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.BlockCollisions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,23 +50,25 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         AABB bb = this.getBoundingBox();
-        int mX = Mth.floor(bb.minX-bb.getXsize()/2);  // Add half the bb size again so that it counts if we're "near enough" to a climbable block
-        int mY = Mth.floor(bb.minY);
-        int mZ = Mth.floor(bb.minZ - bb.getZsize()/2);
+        AABB corrected_bbox = new AABB(
+                bb.minX - bb.getXsize()/2, bb.minY, bb.minZ-bb.getZsize()/2,
+                bb.maxX + bb.getXsize()/2, bb.minY+bb.getYsize()/2, bb.maxZ+bb.getZsize()/2
+                //                             ^^^^^^
+                // Only check for collisions within the "feet" area
+        );
+        BlockCollisions<BlockPos> collisionChecker = new BlockCollisions<>(
+                this.level(), null /* it will infer the wrong bbox */, corrected_bbox,
+                false, (pos, _voxelshape) -> pos
+        );
 
-        for (int y2 = mY; y2 <= bb.minY; y2++) {
-            for (int x2 = mX; x2 < bb.maxX + bb.getXsize()/2; x2++) {
-                for (int z2 = mZ; z2 < bb.maxZ + bb.getZsize()/2; z2++) {
-
-                    BlockPos tmp = new BlockPos(x2, y2, z2);
-                    var state = this.level().getBlockState(tmp);
-                    if (ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.containsKey(state.getBlock())) {
-                        var climbable_range = ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.get(state.getBlock()).apply(state);
-                        if (climbable_range.minScale() <= scale && climbable_range.maxScale() >= scale) {
-                            this.lastClimbablePos = Optional.of(tmp);
-                            return true;
-                        }
-                    }
+        while (collisionChecker.hasNext()) {
+            BlockPos pos = collisionChecker.next();
+            var state = this.level().getBlockState(pos);
+            if (ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.containsKey(state.getBlock())) {
+                var climbable_range = ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.get(state.getBlock()).apply(state);
+                if (climbable_range.minScale() <= scale && climbable_range.maxScale() >= scale) {
+                    this.lastClimbablePos = Optional.of(pos);
+                    return true;
                 }
             }
         }
