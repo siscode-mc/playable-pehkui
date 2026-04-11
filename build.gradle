@@ -162,8 +162,20 @@ static def git_countCommitsSince(String ref) {
 
 static def git_getTagData() {
     // Command: git describe --tags
-    def output = execAndGetOutput("git describe --tags --long").split("-")
-    return new Tuple(output[0], output[1].toInteger())
+    def output = execAndGetOutput("git describe --tags --long")
+
+    def splits = output.split("-")
+
+    def commitIdx = splits.length - 2
+    def baseTag = splits[0..commitIdx-1]
+
+    return new Tuple(processTag(baseTag), splits[commitIdx].toInteger())
+}
+
+static def processTag(List<String> tag) {
+    // Strip modloader text
+    tag.removeAll(["fabric", "forge"])
+    return tag.join("-")
 }
 
 static def git_isDirty() {
