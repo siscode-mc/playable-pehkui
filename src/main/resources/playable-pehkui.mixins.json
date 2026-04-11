@@ -4,12 +4,13 @@
   "package": "org.siscode.playablePehkui.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LivingEntityMixin",
     "BlockCollisionsMixin",
     "EntityMixin",
-    "LeavesBlockMixin"
+    "LeavesBlockMixin",
+    "LivingEntityMixin"
   ],
   "client": [
+    "LevelRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
