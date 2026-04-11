@@ -99,7 +99,7 @@ processResources {
 
 
 def getLoader() {
-    if (project.hasProperty("fabric_version")) {
+    if (project.hasProperty("loom_version")) {
         return "fabric"
     } else if (project.hasProperty("forge_version") && !project.hasProperty("neoforge_version")) {
         return "forge"
