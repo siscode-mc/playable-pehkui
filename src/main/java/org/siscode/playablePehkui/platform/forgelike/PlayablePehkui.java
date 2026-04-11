@@ -11,6 +11,7 @@ public class PlayablePehkui {
         // Register the mod onto Minecraft Forge
         MinecraftForge.EVENT_BUS.register(this);
         context.getModEventBus().addListener(this::onCommonSetup);
+        org.siscode.playablePehkui.platform.facade.PlayablePehkui.onInitialize();
     }
 
     private void onCommonSetup(final FMLCommonSetupEvent event) {
