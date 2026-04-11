@@ -167,10 +167,10 @@ static def git_getTagData() {
     if (output.isEmpty()) {
         // Count how many commits have happened since the initial commit.
         def commitCount = 0
-        def noParentCommits = execAndGetOutput("git rev-list --max-parents=0 HEAD").lines()
+        def noParentCommits = execAndGetOutput("git rev-list --max-parents=0 HEAD").lines().toList()
         // If we live in a sane world.
-        if (noParentCommits.count() == 1) {
-            commitCount = git_countCommitsSince(noParentCommits.findFirst().get())
+        if (noParentCommits.size() == 1) {
+            commitCount = git_countCommitsSince(noParentCommits[0])
         } else {
             // Then we have to loop through and figure out if that base commit is reachable from HEAD.
             // And once we find which one then we can get the commit count.
