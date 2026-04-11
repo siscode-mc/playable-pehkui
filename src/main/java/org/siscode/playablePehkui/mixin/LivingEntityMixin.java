@@ -2,6 +2,8 @@ package org.siscode.playablePehkui.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.siscode.playablePehkui.config.ServerConfig;
 import org.siscode.playablePehkui.movement.ScaleSensitiveClimbables;
 import org.siscode.playablePehkui.platform.fabric.PlayablePehkui;
@@ -81,5 +84,15 @@ public abstract class LivingEntityMixin extends Entity {
 
         var actualSpeed = original - DEFAULT_BASE_GRAVITY;  // TODO: Handle entities with other gravities
         return (actualSpeed * climbability.speedModifier()) + DEFAULT_BASE_GRAVITY;
+    }
+
+    @WrapMethod(method="Lnet/minecraft/world/entity/LivingEntity;handleOnClimbable(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;")
+    private Vec3 defaultClimbableHandlingIsDumbActually(Vec3 original_velocity, Operation<Vec3> original) {
+        double scale = ScaleTypes.BASE.getScaleData(this).getScale();
+        boolean useBetterClimbingEverywhere = false;  // TODO: configuration point
+        if (scale < 1 || useBetterClimbingEverywhere) {
+            if (this.onGround()) { return original_velocity; }
+        }
+        return original.call(original_velocity);
     }
 }
