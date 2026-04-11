@@ -9,13 +9,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
+import org.siscode.playablePehkui.config.ServerConfig;
 import org.siscode.playablePehkui.movement.ScaleSensitiveClimbables;
+import org.siscode.playablePehkui.platform.fabric.PlayablePehkui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.Optional;
+
+import static org.siscode.playablePehkui.platform.facade.PlayablePehkui.SERVER_CONFIG;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -31,7 +35,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (original) { return original; }
 
         double scale = ScaleTypes.BASE.getScaleData(this).getScale();
-        var use_scale_sensitive_climbing = true; // TODO: configuration point
+        var use_scale_sensitive_climbing = SERVER_CONFIG.useScaleSensitiveClimbing;
         if (scale >= 1.0 || !use_scale_sensitive_climbing) {
             return false;
         }
