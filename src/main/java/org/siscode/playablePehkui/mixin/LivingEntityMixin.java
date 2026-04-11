@@ -83,7 +83,13 @@ public abstract class LivingEntityMixin extends Entity {
         var climbability = ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.get(climbingBlock.getBlock()).apply(climbingBlock);
 
         var actualSpeed = original - DEFAULT_BASE_GRAVITY;  // TODO: Handle entities with other gravities
-        return (actualSpeed * climbability.speedModifier()) + DEFAULT_BASE_GRAVITY;
+        var climbingSpeed = (actualSpeed * climbability.speedModifier()) + DEFAULT_BASE_GRAVITY;
+        var allowJumpAtStartOfClimb = true;  // TODO: configuration point
+        if (allowJumpAtStartOfClimb) {
+            return Math.max(this.getDeltaMovement().y, climbingSpeed);
+        } else {
+            return climbingSpeed;
+        }
     }
 
     @WrapMethod(method="Lnet/minecraft/world/entity/LivingEntity;handleOnClimbable(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;")
