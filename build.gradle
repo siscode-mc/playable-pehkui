@@ -164,6 +164,35 @@ static def git_getTagData() {
     // Command: git describe --tags
     def output = execAndGetOutput("git describe --tags --long")
 
+    if (output.isEmpty()) {
+        // Count how many commits have happened since the initial commit.
+        def commitCount = 0
+        def noParentCommits = execAndGetOutput("git rev-list --max-parents=0 HEAD").lines()
+        // If we live in a sane world.
+        if (noParentCommits.count() == 1) {
+            commitCount = git_countCommitsSince(noParentCommits.findFirst().get())
+        } else {
+            // Then we have to loop through and figure out if that base commit is reachable from HEAD.
+            // And once we find which one then we can get the commit count.
+            // If multiple exist then we pick the smallest number found so far.
+            // I have no idea why a single commit would be reached by multiple roots
+            // and it certainly wouldn't be a thing we concern with
+            // with our setup but the thing is here for reliability.
+            def lowestDistance = -1
+            noParentCommits.forEach {
+                if (!execAndGetOutput("git merge-base $it HEAD").isEmpty()) {
+                    def currentCount = git_countCommitsSince(it)
+                    if (lowestDistance == -1 || currentCount < lowestDistance) {
+                        lowestDistance = currentCount
+                    }
+                }
+            }
+
+            commitCount = lowestDistance
+        }
+        return new Tuple("UNDEFINED-PLEASE-ADD-TAG", commitCount);
+    }
+
     def splits = output.split("-")
 
     def commitIdx = splits.length - 2
