@@ -136,7 +136,20 @@ static def execAndGetOutput(String command) {
 
 static def git_getBranchOrHead() {
     // Command: git rev-parse --abbrev-ref HEAD
-    return execAndGetOutput("git rev-parse --abbrev-ref HEAD")
+    return processBranch(execAndGetOutput("git rev-parse --abbrev-ref HEAD"))
+}
+
+static def processBranch(String branch) {
+    def splits = branch.split("/").toList()
+    // Strip "semantic" branches.
+    splits.removeAll(["feature", "fix", "infra"])
+
+    // forgeport case:
+    if (splits.any { it -> (it == "forgeport") }) {
+        return "forgeport"
+    }
+
+    return splits.join("-")
 }
 
 static def git_getShortSha() {
