@@ -117,8 +117,9 @@ def generateVersion() {
     def tagData = git_getTagData()
     def leadingZero = tagData[0].toString().matches("^\\d+.*") ? "" :  "0."
     def loader = getLoader()
+    def isDirty = git_isDirty()
     // If the number of commits since a tag is zero we are at a "publishing" point.
-    if (tagData[1] == 0) {
+    if (tagData[1] == 0 && !isDirty) {
         // Use user-facing format
         return "${leadingZero}${tagData[0]}+${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
     } else {
@@ -126,7 +127,6 @@ def generateVersion() {
         // tagName+branch-commits-hash_loader+mc_version
         def branchName = git_getBranchOrHead().replace("/", "-")
         def shortSha = tagData[2]
-        def isDirty = git_isDirty()
 
         return "${leadingZero}${tagData[0]}+$branchName-${tagData[1]}-${shortSha}${isDirty ? "+WIP" : ""}__${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
     }
