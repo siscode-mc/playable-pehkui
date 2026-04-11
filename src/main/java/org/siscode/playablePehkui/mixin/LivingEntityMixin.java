@@ -17,7 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.siscode.playablePehkui.config.ServerConfig;
 import org.siscode.playablePehkui.movement.ScaleSensitiveClimbables;
-import org.siscode.playablePehkui.platform.fabric.PlayablePehkui;
+import org.siscode.playablePehkui.platform.facade.PlayablePehkui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -87,7 +87,7 @@ public abstract class LivingEntityMixin extends Entity {
 
         var actualSpeed = original - DEFAULT_BASE_GRAVITY;  // TODO: Handle entities with other gravities
         var climbingSpeed = (actualSpeed * climbability.speedModifier()) + DEFAULT_BASE_GRAVITY;
-        var allowJumpAtStartOfClimb = true;  // TODO: configuration point
+        var allowJumpAtStartOfClimb = SERVER_CONFIG.allowJumpAtStartOfClimb;
         if (allowJumpAtStartOfClimb) {
             return Math.max(this.getDeltaMovement().y, climbingSpeed);
         } else {
@@ -98,7 +98,7 @@ public abstract class LivingEntityMixin extends Entity {
     @WrapMethod(method="Lnet/minecraft/world/entity/LivingEntity;handleOnClimbable(Lnet/minecraft/world/phys/Vec3;)Lnet/minecraft/world/phys/Vec3;")
     private Vec3 defaultClimbableHandlingIsDumbActually(Vec3 original_velocity, Operation<Vec3> original) {
         double scale = ScaleTypes.BASE.getScaleData(this).getScale();
-        boolean useBetterClimbingEverywhere = false;  // TODO: configuration point
+        boolean useBetterClimbingEverywhere = SERVER_CONFIG.useBetterClimbingCheckEverywhere;
         if (scale < 1 || useBetterClimbingEverywhere) {
             if (this.onGround()) { return original_velocity; }
         }

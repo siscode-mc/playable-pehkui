@@ -51,4 +51,25 @@ public class ServerConfig extends WrappedConfig {
     @Comment("planks, bricks, and so on being climbable at medium scales (1/4), and dirt being climbable at")
     @Comment("very small scales (1/8 or less)")
     public boolean useScaleSensitiveClimbing = true;
+
+    /**
+     * Whether to disable the velocity-capping behaviour that causes 45-strafes while in climbable blocks
+     * globally, instead of just for scale-sensitive climbables
+     *
+     * @since 0.1.0
+     */
+    @Comment("Removes the vanilla speed capping while within a climbable block but still on the ground.")
+    @Comment("Doesn't modify behaviour once no longer on the ground. This makes 45-strafes impossible but")
+    @Comment("feels more ergonomic. This is always true for tinies on scale-sensitive climbables.")
+    public boolean useBetterClimbingCheckEverywhere = false;
+
+    /**
+     * Whether to allow jumping at the start of a climb for scale-sensitive climbing. Simply do not remove vertical
+     * velocity that is greater than the climbing velocity.
+     *
+     * @since 0.1.0
+     */
+    @Comment("Allows tinies to jump before climbing blocks, by preventing their vertical velocity from being capped.")
+    @Comment("Without this, it especially becomes more painful to climb single blocks at intermediate scales (1/4-1/2)")
+    public boolean allowJumpAtStartOfClimb = true;
 }
