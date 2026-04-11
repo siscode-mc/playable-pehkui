@@ -150,7 +150,7 @@ public class ScaleSensitiveClimbables {
         );
 
         register_many(STICKY_CLIMBABILITY,
-                Blocks.CLAY, Blocks.SLIME_BLOCK, Blocks.HONEY_BLOCK, Blocks.HONEYCOMB_BLOCK, Blocks.MUD
+                Blocks.CLAY, Blocks.SLIME_BLOCK, Blocks.HONEY_BLOCK, Blocks.HONEYCOMB_BLOCK, Blocks.MUD, Blocks.MUDDY_MANGROVE_ROOTS
         );
 
         register_many(LADDERLIKE_CLIMBABILITY,
