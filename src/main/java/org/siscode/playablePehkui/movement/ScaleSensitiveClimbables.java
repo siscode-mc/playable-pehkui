@@ -135,7 +135,7 @@ public class ScaleSensitiveClimbables {
         );
 
         register_many(GRAVEL_CLIMBABILITY,
-                Blocks.GRAVEL, Blocks.SUSPICIOUS_GRAVEL, Blocks.SAND, Blocks.RED_SAND
+                Blocks.GRAVEL, Blocks.SUSPICIOUS_GRAVEL, Blocks.SAND, Blocks.SUSPICIOUS_SAND, Blocks.RED_SAND
         );
 
         register_many(WOOL_CLIMBABILITY,
