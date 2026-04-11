@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 plugins {
     id 'net.fabricmc.fabric-loom-remap' version "$loom_version"
     id 'maven-publish'
@@ -122,8 +124,8 @@ def generateVersion() {
     } else {
         // Use VCS-backed formatting
         // tagName+branch-commits-hash_loader+mc_version
-        def branchName = git_getBranchOrHead().split("/").last()
-        def shortSha = git_getShortSha()
+        def branchName = git_getBranchOrHead().replace("/", "-")
+        def shortSha = tagData[2]
         def isDirty = git_isDirty()
 
         return "${leadingZero}${tagData[0]}+$branchName-${tagData[1]}-${shortSha}${isDirty ? "+WIP" : ""}__${loader.isEmpty() ? "" : "$loader-"}$minecraft_version"
@@ -193,18 +195,18 @@ static def git_getTagData() {
         return new Tuple("UNDEFINED-PLEASE-ADD-TAG", commitCount);
     }
 
-    def splits = output.split("-")
+    def tagRegex = Pattern.compile("(.*)-(\\d+)-g([0-9a-f]+)")
+    def matcher = tagRegex.matcher(output)
+    matcher.matches()
 
-    def commitIdx = splits.length - 2
-    def baseTag = splits[0..commitIdx-1]
-
-    return new Tuple(processTag(baseTag), splits[commitIdx].toInteger())
+    return new Tuple(processTag(matcher.group(1)), matcher.group(2).toInteger(), matcher.group(3))
 }
 
-static def processTag(List<String> tag) {
+static def processTag(String tag) {
     // Strip modloader text
-    tag.removeAll(["fabric", "forge"])
-    return tag.join("-")
+    def split = tag.split("-").toList()
+    split.removeAll(["fabric", "forge"])
+    return split.join("-")
 }
 
 static def git_isDirty() {
