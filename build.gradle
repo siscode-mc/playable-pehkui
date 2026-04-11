@@ -156,6 +156,10 @@ static def git_getShortSha() {
     return execAndGetOutput("git rev-parse --short HEAD")
 }
 
+static def git_countCommitsSince(String ref) {
+    return execAndGetOutput("git rev-list $ref..HEAD").lines().count()
+}
+
 static def git_getTagData() {
     // Command: git describe --tags
     def output = execAndGetOutput("git describe --tags --long").split("-")
