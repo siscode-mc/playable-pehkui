@@ -41,4 +41,14 @@ public class ServerConfig extends WrappedConfig {
     @Comment("Setting it to zero disable it.")
     @FloatRange(min=0.0, max=10.0)
     public double leavesSlowdown = 1.0;
+    /**
+     * If beegs can pass through leaves.
+     *
+     * @since initial
+     */
+    @Comment("Tinies will be able to climb certain blocks. The exact blocks that are climbable depends")
+    @Comment("on the scale of the tiny, with grass and cobblestone being climbable at larger scales (1/2-1/3),")
+    @Comment("planks, bricks, and so on being climbable at medium scales (1/4), and dirt being climbable at")
+    @Comment("very small scales (1/8 or less)")
+    public boolean useScaleSensitiveClimbing = true;
 }
