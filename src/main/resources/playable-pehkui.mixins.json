@@ -6,7 +6,8 @@
   "mixins": [
     "BlockCollisionsMixin",
     "EntityMixin",
-    "LeavesBlockMixin"
+    "LeavesBlockMixin",
+    "LivingEntityMixin"
   ],
   "client": [
   ],
