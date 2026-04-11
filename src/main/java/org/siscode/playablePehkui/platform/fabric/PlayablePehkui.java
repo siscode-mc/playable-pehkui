@@ -6,6 +6,6 @@ import org.siscode.playablePehkui.PehkuiPlugin;
 public class PlayablePehkui implements ModInitializer {
     @Override
     public void onInitialize() {
-        PehkuiPlugin.initialize();
+        org.siscode.playablePehkui.platform.facade.PlayablePehkui.onInitialize();
     }
 }
