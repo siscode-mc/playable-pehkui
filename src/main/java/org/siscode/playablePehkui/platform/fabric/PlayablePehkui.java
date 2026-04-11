@@ -7,8 +7,7 @@ import org.siscode.playablePehkui.movement.ScaleSensitiveClimbables;
 public class PlayablePehkui implements ModInitializer {
     @Override
     public void onInitialize() {
+        org.siscode.playablePehkui.platform.facade.PlayablePehkui.onInitialize();
         PehkuiPlugin.initialize();
-        ScaleSensitiveClimbables.initialize();
-
     }
 }
