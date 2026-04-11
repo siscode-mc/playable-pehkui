@@ -146,7 +146,7 @@ static def processBranch(String branch) {
 
     // forgeport case:
     if (splits.any { it -> (it == "forgeport") }) {
-        return "forgeport"
+        splits.removeIf { it.matches("^(\\d+\\.*)+\$")}
     }
 
     return splits.join("-")
