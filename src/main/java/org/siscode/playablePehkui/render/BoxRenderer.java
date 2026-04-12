@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.siscode.playablePehkui.building.BeegBuildingClient;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class BoxRenderer {
         for (var box : boxesToRender) {
             renderBox(box, poseStack, camera);
         }
-//        var block = debug_getBlockBox();
+//        var block = debug_getBigBox();
 //        if (block != null) {
 //            renderBox(block, poseStack, camera);
 //        }
@@ -66,5 +67,9 @@ public class BoxRenderer {
         var block = (BlockHitResult) hit;
 
         return AABB.unitCubeFromLowerCorner(Vec3.atLowerCornerOf(block.getBlockPos()));
+    }
+
+    private static AABB debug_getBigBox() {
+        return BeegBuildingClient.getCurrentSelection();
     }
 }
