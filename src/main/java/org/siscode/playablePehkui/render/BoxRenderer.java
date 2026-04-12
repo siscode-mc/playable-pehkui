@@ -21,10 +21,10 @@ public class BoxRenderer {
         for (var box : boxesToRender) {
             renderBox(box, poseStack, camera);
         }
-//        var block = debug_getBigBox();
-//        if (block != null) {
-//            renderBox(block, poseStack, camera);
-//        }
+        var block = debug_getBigBox();
+        if (block != null) {
+            renderBox(block, poseStack, camera);
+        }
         boxesToRender.clear();
     }
 

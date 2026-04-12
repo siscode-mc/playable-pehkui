@@ -1,5 +1,6 @@
 package org.siscode.playablePehkui.building;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
@@ -7,9 +8,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 import org.siscode.playablePehkui.PehkuiPlugin;
+import org.siscode.playablePehkui.platform.facade.KeyMappingUtil;
 
 public class BeegBuildingClient {
+    public static KeyMapping TOGGLE_GRID_LOCK = KeyMappingUtil.registerKeybinding("toggle_grid_lock", GLFW.GLFW_KEY_G, BeegBuildingClient::toggleBigGridLock);
+
     public static @Nullable Vec3 lockedBigGrid = Vec3.ZERO;
 
     public static AABB getCurrentSelection() {
@@ -45,5 +50,31 @@ public class BeegBuildingClient {
             Vec3 middle_of_cube = block_bottom_left.add(scale/2.0, scale/2.0, scale/2.0);
             return AABB.ofSize(middle_of_cube, scale, scale, scale);
         }
+    }
+
+    public static void lockBigGrid() {
+        lockedBigGrid = null;
+        var mc = Minecraft.getInstance();
+        var scale = Math.round(PehkuiPlugin.WORLD_INTERACTION_SCALE.getScaleData(mc.player).getScale());
+        var box = getCurrentSelection();
+        if (box != null) {
+            lockedBigGrid = new Vec3(actuallyMod(box.minX, scale), actuallyMod(box.minY, scale), actuallyMod(box.minZ, scale));
+        }
+    }
+
+    public static void unlockBigGrid() {
+        lockedBigGrid = null;
+    }
+
+    public static void toggleBigGridLock() {
+        if (lockedBigGrid == null) {
+            lockBigGrid();
+        } else {
+            unlockBigGrid();
+        }
+    }
+
+    private static double actuallyMod(double v, double modulus) {
+        return ((v % modulus) + modulus) % modulus;  // there's a better way to do this but i hate java so i write the ugly
     }
 }
