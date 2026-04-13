@@ -45,6 +45,10 @@ public class KeyMapping {
         }
     }
 
+    public boolean shouldNotify(boolean newState) {
+        return !isPressed && newState;
+    }
+
     public void onKeyPress(KeyEvents.Keypress event) {
         KeyHandler.register(this, event);
     }

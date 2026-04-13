@@ -36,10 +36,11 @@ public class KeyHandler {
     public static void notify(int keyCode, boolean isPressed) {
         if (ALL_KEYS.containsKey(keyCode)) {
             KeyMapping key = ALL_KEYS.get(keyCode);
+            boolean shouldNotify = key.shouldNotify(isPressed);
             key.setPressed(isPressed);
 
             KeyEvents.Keypress baseListener = BASIC_LISTENERS.get(key);
-            if (baseListener != null) {
+            if (baseListener != null && shouldNotify) {
                 baseListener.onKeypress();
             }
         }
@@ -48,16 +49,19 @@ public class KeyHandler {
     public static void notify(int keyCode, boolean isPressed, KeyContext.LevelCtx ctx) {
         if (ALL_KEYS.containsKey(keyCode)) {
             KeyMapping key = ALL_KEYS.get(keyCode);
+            boolean shouldNotify = key.shouldNotify(isPressed);
             key.setPressed(isPressed);
 
-            KeyEvents.LevelKeypress levelListener = LEVEL_LISTENERS.get(key);
-            if (levelListener != null) {
-                levelListener.onLevelKeypress(ctx);
-            }
+            if (shouldNotify) {
+                KeyEvents.LevelKeypress levelListener = LEVEL_LISTENERS.get(key);
+                if (levelListener != null) {
+                    levelListener.onLevelKeypress(ctx);
+                }
 
-            KeyEvents.Keypress baseListener = BASIC_LISTENERS.get(key);
-            if (baseListener != null) {
-                baseListener.onKeypress();
+                KeyEvents.Keypress baseListener = BASIC_LISTENERS.get(key);
+                if (baseListener != null) {
+                    baseListener.onKeypress();
+                }
             }
         }
     }
@@ -65,23 +69,26 @@ public class KeyHandler {
     public static void notify(int keyCode, boolean isPressed, KeyContext.ScreenCtx ctx) {
         if (ALL_KEYS.containsKey(keyCode)) {
             KeyMapping key = ALL_KEYS.get(keyCode);
+            boolean shouldNotify = key.shouldNotify(isPressed);
             key.setPressed(isPressed);
 
-            if (ctx.parent() instanceof TitleScreen) {
-                KeyEvents.TitleScreenKeypress titleListener = TITLESCREEN_LISTENERS.get(key);
-                if (titleListener != null) {
-                    titleListener.onTitleScreeKeypress();
+            if (shouldNotify) {
+                if (ctx.parent() instanceof TitleScreen) {
+                    KeyEvents.TitleScreenKeypress titleListener = TITLESCREEN_LISTENERS.get(key);
+                    if (titleListener != null) {
+                        titleListener.onTitleScreeKeypress();
+                    }
+                } else  {
+                    KeyEvents.ScreenKeypress screenListener = SCREEN_LISTENERS.get(key);
+                    if (screenListener != null) {
+                        screenListener.onScreenKeyPress(ctx);
+                    }
                 }
-            } else  {
-                KeyEvents.ScreenKeypress screenListener = SCREEN_LISTENERS.get(key);
-                if (screenListener != null) {
-                    screenListener.onScreenKeyPress(ctx);
-                }
-            }
 
-            KeyEvents.Keypress baseListener = BASIC_LISTENERS.get(key);
-            if (baseListener != null) {
-                baseListener.onKeypress();
+                KeyEvents.Keypress baseListener = BASIC_LISTENERS.get(key);
+                if (baseListener != null) {
+                    baseListener.onKeypress();
+                }
             }
         }
     }
