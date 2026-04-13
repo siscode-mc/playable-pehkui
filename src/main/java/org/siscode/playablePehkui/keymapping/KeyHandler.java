@@ -15,6 +15,8 @@ public class KeyHandler {
 
     public static void put(KeyMapping keyMapping) {
         ALL_KEYS.put(keyMapping.keycode, keyMapping);
+
+        addVanillaCategory(keyMapping);
     }
 
     public static void register(KeyMapping keyMapping, KeyEvents.Keypress event) {
@@ -64,6 +66,18 @@ public class KeyHandler {
                 }
             }
         }
+    }
+
+    public static void addVanillaCategory(KeyMapping keyMapping) {
+        Map<String, Integer> categoryMap = KeyMappingAccessor.pphk$getCategoryMap();
+
+        if (categoryMap.containsKey(keyMapping.category)) {
+            return;
+        }
+
+        Optional<Integer> largest = categoryMap.values().stream().max(Integer::compareTo);
+        int largestInt = largest.orElse(0);
+        categoryMap.put(keyMapping.category, largestInt + 1);
     }
 
     public static void notify(int keyCode, boolean isPressed, KeyContext.ScreenCtx ctx) {
