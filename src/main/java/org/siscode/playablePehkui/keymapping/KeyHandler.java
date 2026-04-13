@@ -2,8 +2,9 @@ package org.siscode.playablePehkui.keymapping;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.client.gui.screens.TitleScreen;
+import org.siscode.playablePehkui.mixin.KeyMappingAccessor;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class KeyHandler {
     private static HashMap<Integer, KeyMapping> ALL_KEYS = new HashMap<>();
@@ -13,8 +14,13 @@ public class KeyHandler {
     private static Reference2ObjectOpenHashMap<KeyMapping, KeyEvents.ScreenKeypress> SCREEN_LISTENERS = new Reference2ObjectOpenHashMap<>();
     private static Reference2ObjectOpenHashMap<KeyMapping, KeyEvents.TitleScreenKeypress> TITLESCREEN_LISTENERS = new Reference2ObjectOpenHashMap<>();
 
+    private static List<net.minecraft.client.KeyMapping> optionsScreenKeyMaps = new ArrayList<>();
+
     public static void put(KeyMapping keyMapping) {
         ALL_KEYS.put(keyMapping.keycode, keyMapping);
+        if (keyMapping.showInConfigScreen) {
+            optionsScreenKeyMaps.add(new net.minecraft.client.KeyMapping(keyMapping.translationKey, keyMapping.keycode, keyMapping.category));
+        }
 
         addVanillaCategory(keyMapping);
     }
@@ -115,11 +121,7 @@ public class KeyHandler {
     }
 
 
-    public static void registerVanillaKeyMappings() {
-        for (var mapping : ALL_KEYS.values()) {
-            if (mapping.showInConfigScreen) {
-                new net.minecraft.client.KeyMapping(mapping.translationKey, mapping.keycode, mapping.category);
-            }
-        }
+    public static void registerVanillaKeyMappings(List<net.minecraft.client.KeyMapping> original) {
+        original.addAll(optionsScreenKeyMaps);
     }
 }

@@ -12,7 +12,8 @@
   "client": [
     "KeyboardHandlerMixin",
     "KeyBindsScreenMixin",
-    "KeyMappingAccessor"
+    "KeyMappingAccessor",
+    "OptionsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
