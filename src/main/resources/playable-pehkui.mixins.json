@@ -10,6 +10,9 @@
     "LeavesBlockMixin"
   ],
   "client": [
+    "KeyboardHandlerMixin",
+    "KeyBindsScreenMixin",
+    "KeyMappingAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
