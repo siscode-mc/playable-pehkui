@@ -1,6 +1,7 @@
 plugins {
     id 'net.fabricmc.fabric-loom-remap' version "$loom_version"
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm' version "2.3.20"
 }
 
 version = generateVersion()
@@ -49,6 +50,9 @@ java {
     withSourcesJar()
 }
 
+kotlin {
+    jvmToolchain(targetJavaVersion)
+}
 
 jar {
     from("LICENSE") {
@@ -70,6 +74,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
     modApi("com.github.Virtuoel:Pehkui:${pehkui_version}", {
         exclude group: "net.fabricmc.fabric-api"
