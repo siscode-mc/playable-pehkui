@@ -20,6 +20,7 @@
   "mixins": [
     "playable-pehkui.mixins.json"
   ],
+  "accessWidener": "playable-pehkui.classtweaker",
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",

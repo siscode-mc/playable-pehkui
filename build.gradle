@@ -60,6 +60,10 @@ jar {
  * Fabric Setup
  */
 
+loom {
+    accessWidenerPath = file("src/main/resources/playable-pehkui.classtweaker")
+}
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
