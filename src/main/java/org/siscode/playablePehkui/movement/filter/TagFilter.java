@@ -11,7 +11,7 @@ public class TagFilter implements BlockStateFilter {
     private TagKey<Block> tag;
 
     public static Codec<TagFilter> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(TagKey.codec(Registries.BLOCK).fieldOf("tag").forGetter(TagFilter::getTag)).apply(instance, TagFilter::new));
+            instance.group(TagKey.hashedCodec(Registries.BLOCK).fieldOf("tag").forGetter(TagFilter::getTag)).apply(instance, TagFilter::new));
 
     public TagFilter (TagKey<Block> tag) {
         this.tag = tag;
