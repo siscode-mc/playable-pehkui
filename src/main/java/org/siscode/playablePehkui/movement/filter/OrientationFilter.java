@@ -34,10 +34,10 @@ public class OrientationFilter implements BlockStateFilter {
     }
 
     public enum Orientation implements StringRepresentable {
-        X_AXIS("playable_pekhui:x_axis"),
-        Y_AXIS("playable_pekhui:y_axis"),
-        Z_AXIS("playable_pekhui:z_axis"),
-        XZ_AXIS("playable_pekhui:xz_axis");
+        X_AXIS("playable_pehkui:x_axis"),
+        Y_AXIS("playable_pehkui:y_axis"),
+        Z_AXIS("playable_pehkui:z_axis"),
+        XZ_AXIS("playable_pehkui:xz_axis");
 
         Orientation(String name) {
             this.name = name;
