@@ -1,0 +1,6 @@
+{
+  "block": "#playable_pehkui:grass",
+  "min_scale": 0.03125,
+  "max_scale": 0.66,
+  "speed_modifier": 0.33
+}

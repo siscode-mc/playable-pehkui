@@ -1,0 +1,6 @@
+{
+  "block": "#playable_pehkui:dirt",
+  "min_scale": 0.03125,
+  "max_scale": 0.125,
+  "speed_modifier": 0.33
+}

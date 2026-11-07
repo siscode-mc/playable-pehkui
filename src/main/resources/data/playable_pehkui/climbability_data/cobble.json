@@ -1,0 +1,6 @@
+{
+  "block": "#playable_pehkui:cobblestone",
+  "min_scale": 0.083,
+  "max_scale": 0.33,
+  "speed_modifier": 0.33
+}

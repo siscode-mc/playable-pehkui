@@ -1,0 +1,6 @@
+{
+  "block": "#playable_pehkui:bricks",
+  "min_scale": 0.125,
+  "max_scale": 0.25,
+  "speed_modifier": 0.5
+}

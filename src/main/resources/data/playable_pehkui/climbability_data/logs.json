@@ -1,0 +1,37 @@
+{
+  "block": "#minecraft:overworld_natural_logs",
+  "filter": {
+    "type": "playable_pehkui:any",
+    "children": [
+      {
+        "type": "playable_pehkui:all",
+        "children": [
+          {
+            "type": "playable_pehkui:orientation",
+            "axis": "playable_pehkui:y_axis"
+          },
+          {
+            "type": "playable_pehkui:matches_tag",
+            "tag": "#playable_pehkui:latitudinal_logs"
+          }
+        ]
+      },
+      {
+        "type": "playable_pehkui:all",
+        "children": [
+          {
+            "type": "playable_pehkui:orientation",
+            "axis": "playable_pehkui:xz_axis"
+          },
+          {
+            "type": "playable_pehkui:matches_tag",
+            "tag": "#playable_pehkui:longitudinal_logs"
+          }
+        ]
+      }
+    ]
+  },
+  "min_scale": 0.0625,
+  "max_scale": 0.25,
+  "speed_modifier": 0.5
+}

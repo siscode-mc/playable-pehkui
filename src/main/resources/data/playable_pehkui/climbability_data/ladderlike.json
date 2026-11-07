@@ -1,0 +1,6 @@
+{
+  "block": "#playable_pehkui:ladder",
+  "min_scale": 0.083,
+  "max_scale": 0.66,
+  "speed_modifier": 1
+}

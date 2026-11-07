@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:clay",
+    "minecraft:slime_block",
+    "minecraft:honey_block",
+    "minecraft:honeycomb_block",
+    "minecraft:mud",
+    "minecraft:muddy_mangrove_roots"
+  ]
+}

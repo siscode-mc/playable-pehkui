@@ -1,0 +1,46 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cobblestone",
+    "minecraft:cobblestone_slab",
+    "minecraft:cobblestone_stairs",
+    "minecraft:cobblestone_wall",
+
+    "minecraft:mossy_cobblestone",
+    "minecraft:mossy_cobblestone_slab",
+    "minecraft:mossy_cobblestone_stairs",
+    "minecraft:mossy_cobblestone_wall",
+
+    "minecraft:deepslate",
+    "minecraft:cobbled_deepslate",
+    "minecraft:cobbled_deepslate_slab",
+    "minecraft:cobbled_deepslate_stairs",
+    "minecraft:cobbled_deepslate_wall",
+
+    "minecraft:netherrack",
+    "minecraft:end_stone",
+    "minecraft:glowstone",
+
+    "minecraft:cracked_stone_bricks",
+    "minecraft:cracked_deepslate_bricks",
+    "minecraft:cracked_polished_blackstone_bricks",
+
+    "minecraft:sandstone",
+    "minecraft:sandstone_slab",
+    "minecraft:sandstone_stairs",
+    "minecraft:sandstone_wall",
+    "minecraft:red_sandstone",
+    "minecraft:red_sandstone_slab",
+    "minecraft:red_sandstone_stairs",
+    "minecraft:red_sandstone_wall",
+
+    "minecraft:prismarine",
+    "minecraft:prismarine_slab",
+    "minecraft:prismarine_stairs",
+    "minecraft:prismarine_wall",
+
+    "minecraft:infested_cobblestone",
+    "minecraft:infested_deepslate",
+    "minecraft:infested_cracked_stone_bricks"
+  ]
+}
