@@ -11,7 +11,7 @@ import static org.siscode.playablePehkui.platform.facade.ModIdentifierUtil.pphkR
 public class ModRegistries {
     public static Registry<BlockStateFilterType<?>> BLOCK_STATE_FILTER_TYPE = org.siscode.playablePehkui.platform.fabric.ModRegistries.BLOCK_STATE_FILTER_TYPE;
 
-    private static <T> ResourceKey<Registry<T>> createRegistryKey(String name) {
-        return ResourceKey.createRegistryKey(pphkResource(name));
+    public static void initialize() {
+        BlockStateFilterType.init();
     }
 }

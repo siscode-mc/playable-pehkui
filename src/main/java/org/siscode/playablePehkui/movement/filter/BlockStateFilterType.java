@@ -16,4 +16,13 @@ public interface BlockStateFilterType<T extends BlockStateFilter> {
     static <T extends BlockStateFilter> BlockStateFilterType<T> register(String name, Codec<T> codec) {
         return Registry.register(ModRegistries.BLOCK_STATE_FILTER_TYPE, name, () -> codec);
     }
+
+    // All of these stupid inits are here to guarantee classes are loaded in-order.
+    // Its a hack that i wish i didn't want to do but this one is here because making the BLOCK_STATE_FILTER_TYPE
+    // registry doesn't actually load this class, even if its referenced as the type argument.
+    // Mind is trully boggled. I want it to work all the time instead of being fickle so here it is.
+    // Minecraft kinda does the same with the <REGISTRY>.bootstrap() methods.
+    static void init() {
+
+    }
 }
