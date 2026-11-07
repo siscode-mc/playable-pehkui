@@ -8,17 +8,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.siscode.playablePehkui.config.ServerConfig;
-import org.siscode.playablePehkui.movement.ScaleSensitiveClimbables;
-import org.siscode.playablePehkui.platform.fabric.PlayablePehkui;
+import org.siscode.playablePehkui.movement.ClimbabilityDataLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import virtuoel.pehkui.api.ScaleTypes;
 
 import java.util.Optional;
@@ -56,9 +51,14 @@ public abstract class LivingEntityMixin extends Entity {
 
                     BlockPos tmp = new BlockPos(x2, y2, z2);
                     var state = this.level().getBlockState(tmp);
-                    if (ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.containsKey(state.getBlock())) {
-                        var climbable_range = ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.get(state.getBlock()).apply(state);
-                        if (climbable_range.minScale() <= scale && climbable_range.maxScale() >= scale) {
+                    var result = ClimbabilityDataLoader.getClimbabilityForBlockState(state);
+                    if (result.isPresent()) {
+                        var data= result.get();
+                        if (data.minScale() <= scale && data.maxScale() >= scale) {
+                            if (data.filter().isPresent() && !data.filter().get().match(state)) {
+                                return false;
+                            }
+
                             this.lastClimbablePos = Optional.of(tmp);
                             return true;
                         }
@@ -76,8 +76,10 @@ public abstract class LivingEntityMixin extends Entity {
         if (climbing.isEmpty()) { return original; }
 
         BlockState climbingBlock = self.level().getBlockState(climbing.get());
-        if (!ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.containsKey(climbingBlock.getBlock())) { return original; }
-        var climbability = ScaleSensitiveClimbables.REGISTERED_CLIMBABLES.get(climbingBlock.getBlock()).apply(climbingBlock);
+        var result = ClimbabilityDataLoader.getClimbabilityForBlockState(climbingBlock);
+        if (result.isEmpty()) { return original; }
+
+        var climbability = result.get();
 
         var actualSpeed = original - DEFAULT_BASE_GRAVITY;  // TODO: Handle entities with other gravities
         return (actualSpeed * climbability.speedModifier()) + DEFAULT_BASE_GRAVITY;
