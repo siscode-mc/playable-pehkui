@@ -9,7 +9,7 @@ import static org.siscode.playablePehkui.platform.facade.ModIdentifierUtil.pphkR
 
 
 public class ModRegistries {
-    public static Registry<BlockStateFilterType<?>> BLOCK_STATE_FILTER_TYPE = BuiltInRegistriesMixin.pphk$registerSimple(createRegistryKey("block_state_filter_type"), registry ->  BlockStateFilterType.NOT_FILTER_TYPE);
+    public static Registry<BlockStateFilterType<?>> BLOCK_STATE_FILTER_TYPE = org.siscode.playablePehkui.platform.fabric.ModRegistries.BLOCK_STATE_FILTER_TYPE;
 
     private static <T> ResourceKey<Registry<T>> createRegistryKey(String name) {
         return ResourceKey.createRegistryKey(pphkResource(name));
